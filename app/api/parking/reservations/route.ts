@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       return errorResponse("Data tidak valid", 400, parsed.error.issues.map((e) => e.message).join(", "));
     }
 
-    const { slot_id, vehicle_id, reserve_date } = parsed.data;
+    const { slot_id, vehicle_id, reserve_date, payment_method } = parsed.data;
 
     // Parse tanggal & validasi tidak boleh masa lalu
     const reserveDate = new Date(reserve_date);
@@ -107,8 +107,9 @@ export async function POST(req: NextRequest) {
         vehicleId: vehicle_id,
         slotId: slot_id,
         reserveDate,
-        status: "PENDING",  // aktif setelah bayar
-        amount,
+        status: "PENDING",
+        pricePerDay: amount,       // ← bukan amount
+        paymentMethod: payment_method,  // ← tambah ini
       },
       include: {
         vehicle: { select: { vehiclePlate: true, vehicleType: true, label: true } },
