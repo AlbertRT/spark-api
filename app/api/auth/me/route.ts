@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       where: { userId: auth.payload.userId, status: "ACTIVE" },
       orderBy: { createdAt: "desc" },
       include: {
-        plan: { select: { name: true, pricePerMonth: true, vehicleType: true } },
+        plan: { select: { name: true, pricePerMonth: true } },
       },
     });
 
